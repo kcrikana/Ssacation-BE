@@ -1,2 +1,2 @@
-# Ssacation-FE
+# Ssacation-BE
 SsafyVacation
