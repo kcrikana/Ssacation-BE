@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/ssacation?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/SSACATION?serverTimezone=UTC
     username: root
     password: ssafy
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -8,16 +8,15 @@ spring:
 
   #jpa
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
-        ddl-auto: update
         format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         use_sql_comments: true
         show_sql: true
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+
 
 server:
   port: 9999
@@ -25,13 +24,18 @@ server:
 # mybatis
 mybatis:
   mapper-locations: mappers/**/*.xml
-  type-aliases-package: com.ssacation.model.dto
+  type-aliases-package: com.SSACATION.model.dto
 
 
 # logging
 logging:
   level:
-    com.ssacation: debug
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: trace # 쿼리의 ?에 어떤 값이 들어가는지 TRACE Log에 값을 보여주는 설정
 
 
 

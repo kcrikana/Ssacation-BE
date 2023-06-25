@@ -24,6 +24,7 @@ public class UserJpaServiceImpl implements UserJpaService{
     static final String clientId = "f21dc05c1cc5d570d69aa3c69b9f8a17";
     static final String redirectUri = "http://localhost:8080/auth/kakao/callback";
 
+
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -32,14 +33,14 @@ public class UserJpaServiceImpl implements UserJpaService{
     }
 
     @Override
-    public Optional<User> findById(String userId) {
-        Optional<User> user = userRepository.findById(userId);
+    public Optional<User> findById(String id) {
+        Optional<User> user = userRepository.findById(id);
         return user;
     }
 
     @Override
-    public void deleteById(String userId) {
-        userRepository.deleteById(userId);
+    public void deleteById(String id) {
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -49,8 +50,8 @@ public class UserJpaServiceImpl implements UserJpaService{
     }
 
     @Override
-    public void updateById(String userId, User updateUser) {
-        Optional<User> user = userRepository.findById(userId);
+    public void updateById(String id, User updateUser) {
+        Optional<User> user = userRepository.findById(id);
         if(user.isPresent()) {
             user.get().setPassword(updateUser.getPassword());
             user.get().setName(updateUser.getName());
@@ -151,5 +152,13 @@ public class UserJpaServiceImpl implements UserJpaService{
         }
 
         return userInfo;
+    }
+
+
+    @Override
+    public List<String> getSolvedGroup(String id) {
+        List<String> groups = new ArrayList<>();
+        String solvedUri = "https://www.acmicpc.net/group/list";
+        return groups;
     }
 }

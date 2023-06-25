@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserJpaService {
+public interface
+
+UserJpaService {
 
     List<User> findAll();
 
@@ -21,4 +23,6 @@ public interface UserJpaService {
     String getAccessToken(String code);
 
     HashMap<String, Object> getUserInfo(String access_Token);
+
+    List<String> getSolvedGroup(String id);
 }

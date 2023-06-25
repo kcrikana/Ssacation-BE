@@ -3,7 +3,6 @@ package com.ssacation.jpamodel.controller;
 
 import com.ssacation.jpamodel.jpo.User;
 import com.ssacation.jpamodel.service.UserJpaServiceImpl;
-import com.ssacation.model.dto.SearchCondition;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,7 +42,8 @@ public class UserRestJpaController {
     @ApiOperation(value = "{id}에 해당하는 사용자 정보를 반환한다.", response = User.class)
     public ResponseEntity<?> getUser(@PathVariable String userId) {
         Optional<User> user = ujs.findById(userId);
-        return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+        if(user==null) return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        else return new ResponseEntity<Optional<User>>(user, HttpStatus.OK);
     }
 
 
@@ -57,7 +57,7 @@ public class UserRestJpaController {
     @PutMapping("/user")
     @ApiOperation(value = "사용자 정보를 수정한다.", response = Integer.class)
     public ResponseEntity<?> updateUser(@RequestBody User user) {
-        ujs.updateById(user.getUserId(), user);
+        ujs.updateById(user.getId(), user);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
@@ -73,13 +73,16 @@ public class UserRestJpaController {
     }
 
     @GetMapping("/auth/kakao/callback")	// 데이터를 리턴해주는 컨트롤러 함수
-    public @ResponseBody String kakaoCallback(String code) {
+    public @ResponseBody ResponseEntity<?> kakaoCallback(String code) {
         System.out.println(code);
         String access_Token = ujs.getAccessToken(code);
         System.out.println(access_Token);
         HashMap<String, Object> userInfo = ujs.getUserInfo(access_Token);
-        System.out.println(userInfo);
-        return (String)userInfo.get("email");
-    }
 
+        System.out.println(userInfo);
+        Optional<User> user = ujs.findById((String)userInfo.get("email"));
+
+        if(user != null) return new ResponseEntity<Optional<User>>(user, HttpStatus.OK);
+        else return new ResponseEntity<Optional<User>>(user,HttpStatus.NO_CONTENT);
+    }
 }
